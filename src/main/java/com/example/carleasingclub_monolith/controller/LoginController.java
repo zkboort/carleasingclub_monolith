@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +35,8 @@ public class LoginController {
 
     @ApiOperation(value = "登录之后返回token")
     @PostMapping("/systemUserLogin")
-    public Response login(SystemUserLoginParams systemUserLoginParams, HttpServletRequest request){
-         return systemUserService.login(systemUserLoginParams.getUsername(),systemUserLoginParams.getPassword(),request);
+    public Response login(@RequestBody SystemUserLoginParams systemUserLoginParams, HttpServletRequest request){
+         return systemUserService.login(systemUserLoginParams.getUsername(),systemUserLoginParams.getPassword(),systemUserLoginParams.getVerifyCode(),request);
     }
 
     @ApiOperation(value = "获取当前登录用户信息")

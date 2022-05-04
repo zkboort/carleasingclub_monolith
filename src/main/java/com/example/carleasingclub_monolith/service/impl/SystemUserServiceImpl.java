@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -53,7 +54,13 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      * @return com.example.carleasingclub_monolith.common.result.Response
      */
     @Override
-    public Response login(String username, String password, HttpServletRequest request) {
+    public Response login(String username, String password, String verifyCode,HttpServletRequest request) {
+        //获取验证码
+        String captcha=request.getSession().getAttribute("captcha").toString();
+        if(StringUtils.isEmpty(verifyCode)|| !captcha.equalsIgnoreCase(verifyCode)){
+            return Response.error("验证码错误，请重新输入！");
+        }
+        //登录
         UserDetails userDetails=userDetailsService.loadUserByUsername(username);
         if(userDetails==null|| passwordEncoder.matches(password,userDetails.getPassword())){
             return Response.error(StatusCodeEnue.LOGIN_FAIL.getCode(),StatusCodeEnue.LOGIN_FAIL.getMessage());

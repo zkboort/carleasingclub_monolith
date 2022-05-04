@@ -58,7 +58,7 @@ public class JwtTokenUtil {
                 //生成失效时间与失效时间的转换
                 .setExpiration(resoveExpitartionDate())
                 //签名
-                .signWith(SignatureAlgorithm.ES512,secret)
+                .signWith(SignatureAlgorithm.HS512,secret)
                 .compact();
     }
     /***

@@ -22,7 +22,7 @@ public interface ISystemUserService extends IService<SystemUser> {
      * @params [username, password, request]
      * @return com.example.carleasingclub_monolith.common.result.Response
      */
-    Response login(String username, String password, HttpServletRequest request);
+    Response login(String username, String password,String verifyCode, HttpServletRequest request);
     /***
      * @Description 根据用户名获取用户
      * @author chennanjiang

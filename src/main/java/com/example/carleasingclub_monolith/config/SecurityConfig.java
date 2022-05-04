@@ -4,6 +4,9 @@ package com.example.carleasingclub_monolith.config;/**
  * @date 2022-05-03 21:08
  */
 
+import com.example.carleasingclub_monolith.common.filters.JwtAuthencationTokenFilter;
+import com.example.carleasingclub_monolith.common.result.RestAccessDeniedHandler;
+import com.example.carleasingclub_monolith.common.result.RestAuthorizationEntryPoint;
 import com.example.carleasingclub_monolith.entity.SystemUser;
 import com.example.carleasingclub_monolith.service.impl.SystemUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author chennanjiang
@@ -26,6 +31,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SystemUserServiceImpl systemUserService;
+    @Autowired
+    private RestAccessDeniedHandler restAccessDeniedHandler;
+    @Autowired
+    private RestAuthorizationEntryPoint restAuthorizationEntryPoint;
 
     /**
      * @Description 重写UserDetailService的根据用户名获取用户信息方法
@@ -63,6 +72,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        return  new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public JwtAuthencationTokenFilter jwtAuthencationTokenFilter(){
+      return new JwtAuthencationTokenFilter();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //忽略拦截所有
+        web.ignoring().antMatchers("/**");
+
+    }
+
+
     /**
      * @Description 权限框架完整配置
      * @author chennanjiang
@@ -79,21 +101,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                //允许登录访问，暂时开放所有
-                .antMatchers("/*")
-                .permitAll()
-                //需要拦截请求路径
-                //.anyRequest()
-                //.authenticated()
+                //需要拦截请求路径,所有需要
+                .anyRequest()
+                .authenticated()
                 .and()
                 .headers()
                 .cacheControl();
         //添加jwt 登录授权过滤器
-        http.addFilterBefore();
+        http.addFilterBefore(jwtAuthencationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
         //自定义未授权和未登录结果返回
         http.exceptionHandling()
-                .accessDeniedHandler()
-                .authenticationEntryPoint();
+                .accessDeniedHandler(restAccessDeniedHandler)
+                .authenticationEntryPoint(restAuthorizationEntryPoint);
 
     }
 }
