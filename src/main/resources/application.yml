@@ -1,0 +1,50 @@
+server:
+  port: 8888
+
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/carleasingclub?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat,wall,slf4j,config
+      #最大连接池数量
+      max-active: 100
+      #初始化建立物理连接的数量
+      initial-size: 1
+      #最小连接池数量
+      min-idle: 1
+      #间隔多久检测在连接池中需要关闭的空闲的连接 毫秒
+      time-between-eviction-runs-millis: 60000
+      #一个空闲连接在连接池中能够存活的最小时间 毫秒
+      min-evictable-idle-time-millis: 300000
+      #检测连接是否有效的SQL
+      validation-query: slect 'x'
+
+jwt:
+  #JWT储存请求头
+  tokenHeader: Authorization
+  #加密解密使用的密钥
+  secret: club-carSecret
+  #JWT超时的时间（一天）
+  expiration: 604800
+  #JWT负载中拿到的开头
+  tokenHead: Bearer
+
+#swagger2
+swagger:
+　　 enabled: true
+
+#mybatis-plu配置
+mybatis-plus:
+  configuration:
+    #配置日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#代码生成器配置
+ucode:
+
+
