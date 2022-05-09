@@ -13,4 +13,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICarProductSkuService extends IService<CarProductSku> {
 
+    /***
+     * @Description 添加汽车商品规格
+     * @author chennanjiang
+     * @date 2022/5/9 19:57
+     * @params [carProductSku]
+     * @return int
+     */
+    int addPorductSku(CarProductSku carProductSku);
 }

@@ -34,7 +34,7 @@ public class Role implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    @ApiModelProperty(value = "数据权限呢")
+    @ApiModelProperty(value = "数据权限")
     @TableField("data_scope")
     private String dataScope;
 

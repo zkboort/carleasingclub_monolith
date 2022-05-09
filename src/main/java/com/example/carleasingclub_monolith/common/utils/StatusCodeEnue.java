@@ -8,9 +8,13 @@ package com.example.carleasingclub_monolith.common.utils;
 public enum StatusCodeEnue {
     LOGIN_FAIL(601,"登录失败！用户名或密码错误"),
     NO_LOGIN(401,"未登录，请登录"),
+    NO_PROMISSION(403,"权限不足"),
     ACCOUNT_ENABLED(605,"账号被禁用"),
-    ADD_FAIL(1000,"新增失败！"),
-    NO_PROMISSION(609,"权限不足！");
+    QUERY_FAIL(601,"查询失败！"),
+    DELETE_FAIL(604,"删除失败！"),
+    UPDATE_FAIL(605,"修改失败！"),
+    ADD_FAIL(609,"新增失败！");
+
 
 
 

@@ -45,6 +45,9 @@ mybatis-plus:
     #配置日志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+logging:
+  level:
+    io.swagger.models.parameters.AbstractSerializableParameter: error
 #代码生成器配置
 ucode:
 

@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,7 +30,7 @@ public class SystemUser implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户表")
+    @ApiModelProperty(value = "id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -58,18 +59,17 @@ public class SystemUser implements Serializable, UserDetails {
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")
-    private LocalDateTime createTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
     @ApiModelProperty(value = "最后一次修改密码时间")
     @TableField("last_password_reset_time")
-    private LocalDateTime lastPasswordResetTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastPasswordResetTime;
 
-    @ApiModelProperty(value = "系统用户状态 0 禁用 1启用")
-    private Integer enabled;
+    @ApiModelProperty(value = "系统用户状态 true 禁用 false启用")
+    private boolean enabled;
 
-    @ApiModelProperty(value = "删除标记  0 删除 1启用")
-    @TableField(" is_del")
-    private Boolean  isDel;
 
 
     @Override
@@ -94,6 +94,6 @@ public class SystemUser implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled==0;
+        return enabled;
     }
 }

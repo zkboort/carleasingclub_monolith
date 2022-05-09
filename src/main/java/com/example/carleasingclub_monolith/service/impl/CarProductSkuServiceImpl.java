@@ -4,6 +4,7 @@ import com.example.carleasingclub_monolith.entity.CarProductSku;
 import com.example.carleasingclub_monolith.mapper.CarProductSkuMapper;
 import com.example.carleasingclub_monolith.service.ICarProductSkuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CarProductSkuServiceImpl extends ServiceImpl<CarProductSkuMapper, CarProductSku> implements ICarProductSkuService {
+    @Autowired
+    private CarProductSkuMapper carProductSkuMapper;
+
+    /***
+     * @Description 添加汽车商品规格
+     * @author chennanjiang
+     * @date 2022/5/9 20:11
+     * @params [carProductSku]
+     * @return int
+     */
+    @Override
+    public int addPorductSku(CarProductSku carProductSku) {
+        return carProductSkuMapper.insert(carProductSku);
+    }
+
 
 }

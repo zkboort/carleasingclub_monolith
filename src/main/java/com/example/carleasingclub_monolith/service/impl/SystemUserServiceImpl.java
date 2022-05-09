@@ -1,7 +1,6 @@
 package com.example.carleasingclub_monolith.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.example.carleasingclub_monolith.common.result.Response;
 import com.example.carleasingclub_monolith.common.utils.JwtTokenUtil;
 import com.example.carleasingclub_monolith.common.utils.StatusCodeEnue;
@@ -9,7 +8,6 @@ import com.example.carleasingclub_monolith.entity.SystemUser;
 import com.example.carleasingclub_monolith.mapper.SystemUserMapper;
 import com.example.carleasingclub_monolith.service.ISystemUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -91,5 +90,66 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public SystemUser getSystemUserByUserName(String username) {
         return systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("username",username).eq("enabled",true));
+    }
+
+    /***
+     * @Description  添加单个用户
+     * @author chennanjiang
+     * @date 2022/5/7 19:28
+     * @params [user]
+     * @return int
+     */
+    @Override
+    public int addSystemUser(SystemUser user) {
+        return systemUserMapper.insert(user);
+    }
+
+    /***  查询所有用户
+     * @Description
+     * @author chennanjiang
+     * @date 2022/5/7 19:28
+     * @params []
+     * @return java.util.List<com.example.carleasingclub_monolith.entity.SystemUser>
+     */
+    @Override
+    public List<SystemUser> getAllUser() {
+        return systemUserMapper.selectList(null);
+    }
+
+    /***
+     * @Description 根据ID列表批量查询
+     * @author chennanjiang
+     * @date 2022/5/7 20:13
+     * @params [ids]
+     * @return java.util.List<com.example.carleasingclub_monolith.entity.SystemUser>
+     */
+    @Override
+    public List<SystemUser> queryList(List ids) {
+        return  systemUserMapper.selectBatchIds(ids);
+    }
+
+    /***
+     * @Description
+     * @author chennanjiang
+     * @date 2022/5/8 20:24
+     * @params [user]
+     * @return int
+     */
+    @Override
+    public int updateUserById(SystemUser user) {
+        return systemUserMapper.updateById(user);
+    }
+
+
+    /***
+     * @Description 根据用户ID删除用户
+     * @author chennanjiang
+     * @date 2022/5/8 20:24
+     * @params [userId]
+     * @return int
+     */
+    @Override
+    public int deleteUserById(int userId) {
+        return systemUserMapper.deleteById(userId);
     }
 }
